@@ -1,0 +1,16 @@
+{
+  "name": "316-hw1-playlister-solution",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "jstps": "^2.0.2"
+  }
+}
