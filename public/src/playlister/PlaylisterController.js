@@ -27,6 +27,14 @@ export default class PlaylisterController {
 
         // SETUP THE MODAL HANDLERS
         this.registerModalHandlers();
+
+        // ADD PLAYLIST BUTTON HANDLER
+        const addPlaylistButton = document.getElementById('add-playlist-button');
+        if (addPlaylistButton) {
+            addPlaylistButton.onclick = (event) => {
+                this.addNewPlaylist();
+            };
+        }
     }
 
     /**
@@ -266,4 +274,14 @@ export default class PlaylisterController {
         this.model = initModel;
         this.registerStaticHandlers();
     }
+
+    addNewPlaylist() {
+    if (this.model) {
+        // Asks model to add a new playlist called "Untitled"
+        let newPlaylist = this.model.addNewList("Untitled", []);
+        //Select the new playlist so user can start adding songs
+        this.model.selectList(newPlaylist);
+    }
+}
+
 }
