@@ -35,23 +35,33 @@ export default class PlaylisterView {
         playlistCard.id = listId;
         playlistCard.classList.add("playlist-card", "unselected-playlist-card");
 
-        playlistCard.querySelector("span").id = "playlist-card-text-" + newList.id;
-        playlistCard.querySelector("span").textContent = newList.name;
-        
-        let textInput = playlistCard.querySelector("#playlist-card-text-input-");
-        textInput.id += newList.id;
+        // UPDATE SPAN AND TEXT INPUT IDs
+        let playlistText = playlistCard.querySelector("span");
+        playlistText.id = "playlist-card-text-" + newList.id;
+        playlistText.textContent = newList.name;
 
-        playlistCard.querySelector('input[id^="delete-list-button-"]').id += newList.id;
+        let textInput = playlistCard.querySelector("input[type='text']");
+        textInput.id = "playlist-card-text-input-" + newList.id;
 
+        // UPDATE DELETE BUTTON ID
+        let deleteButton = playlistCard.querySelector('input[value="🗑"]');
+        deleteButton.id = "delete-list-button-" + newList.id;
+
+        // UPDATE DUPLICATE BUTTON ID
+        let duplicateButton = playlistCard.querySelector('input[value="⧉"]');
+        duplicateButton.id = "duplicate-playlist-button-" + newList.id;
+
+        // UNHIDE THE CARD
         playlistCard.hidden = false;
 
-        // AND PUT THE NEW CARD INTO THE LISTS DIV
+        // ADD THE NEW CARD TO THE SIDEBAR
         let listsElement = document.getElementById("playlist-cards");
         listsElement.appendChild(playlistCard);
 
-        // SETUP THE HANDLER FOR WHEN SOMEONE MOUSE CLICKS ON OUR LIST
+        // SETUP EVENT HANDLERS VIA CONTROLLER
         this.controller.registerPlaylistCardHandlers(newList.id);
     }
+
 
     /**
      * This removes all the songs from UI workspace, which should be

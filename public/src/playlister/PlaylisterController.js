@@ -35,6 +35,7 @@ export default class PlaylisterController {
                 this.addNewPlaylist();
             };
         }
+        
     }
 
     /**
@@ -173,6 +174,16 @@ export default class PlaylisterController {
         textInput.onblur = (event) => {
             this.model.setListNameBeingChanged(false, id);
             this.model.renameCurrentList(event.target.value);//, id);
+        }
+
+        // HANDLES DUPLICATING A PLAYLIST
+        const duplicateButton = document.getElementById("duplicate-playlist-button-" + id);
+        if (duplicateButton) {
+            duplicateButton.onclick = (event) => {
+            this.ignoreParentClick(event); // prevent parent card selection when duplicating
+            this.model.duplicateList(id);  // duplicate this specific playlist
+            if (newPlaylist) this.model.selectList(newPlaylist); // select new card immediately
+            };
         }
     }
 

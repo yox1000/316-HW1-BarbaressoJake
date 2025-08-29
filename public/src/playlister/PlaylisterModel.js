@@ -512,4 +512,26 @@ export default class PlaylisterModel {
                             this.confirmDialogOpen, this.tps.hasTransactionToDo(), this.tps.hasTransactionToUndo());
         }
     }
+
+    /**
+    * Duplicates the playlist with the given ID and creates new playlist with same songs and modified name
+     */
+    duplicateList(id) {
+        let original = this.getPlaylist(id);
+        if (!original) return null;
+
+        // Deep copy songs from original playlist
+        let copiedSongs = original.songs.map(song => {
+            return new PlaylistSongPrototype(song.title, song.artist, song.youTubeId);
+        });
+
+        // Generates new name for the copy of the duplicated playlist
+        let newName = original.name + " (Copy)";
+        let newPlaylist = this.addNewList(newName, copiedSongs);
+
+        // Select the duplicate immediately
+        this.selectList(newPlaylist);
+
+        return newPlaylist;
+    }
 }
