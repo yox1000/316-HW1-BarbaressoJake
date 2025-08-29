@@ -76,6 +76,11 @@ export default class PlaylisterController {
             editSongModal.classList.remove("is-visible");
         }
 
+        document.getElementById("edit-song-confirm-button").onclick = (event) => {
+            this.handleUpdateSong();
+        }
+
+
         // RESPOND TO THE USER CONFIRMING TO DELETE A PLAYLIST
         document.getElementById("delete-list-confirm-button").onclick = (event) => {
             // NOTE THAT WE SET THE ID OF THE LIST TO REMOVE
@@ -103,6 +108,7 @@ export default class PlaylisterController {
             let deleteListModal = document.getElementById("delete-list-modal");
             deleteListModal.classList.remove("is-visible");
         }
+
     }
 
     /**
@@ -293,6 +299,25 @@ export default class PlaylisterController {
         //Select the new playlist so user can start adding songs
         this.model.selectList(newPlaylist);
     }
-}
+    }
+
+    handleupdatesong () {
+        let songIndex = this.model.getEditSongIndex();
+        let newTitle = document.getElementById("edit-song-modal-title-textfield").value;
+        let newArtist = document.getElementById("edit-song-modal-artist-textfield").value;
+        let newYouTubeId = document.getElementById("edit-song-modal-youTubeId-textfield").value;
+        let newYear = document.getElementById("edit-song-modal-year-textfield").value; // NEW FIELD
+
+        // Tell model to update song
+        this.model.updateSong(songIndex, newTitle, newArtist, newYouTubeId, newYear);
+
+        // Close modal
+        let editSongModal = document.getElementById("edit-song-modal");
+        editSongModal.classList.remove("is-visible");
+
+        // Re-enable interactions
+        this.model.toggleConfirmDialogOpen();
+
+    }
 
 }

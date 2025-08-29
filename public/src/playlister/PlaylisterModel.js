@@ -534,4 +534,21 @@ export default class PlaylisterModel {
 
         return newPlaylist;
     }
+
+    /**
+     * Updates the song at the edit index to have the new values provided from the edit song modal.
+     */
+    updateSong(index, newTitle, newArtist, newYouTubeId, newYear) {
+        if (this.hasCurrentList() && index >= 0 && index < this.currentList.songs.length) {
+           let song = this.currentList.songs[index];
+           song.title = newTitle;
+           song.artist = newArtist;
+           song.youTubeId = newYouTubeId;
+           song.year = newYear;
+
+           // Refresh view and save changes
+           this.view.refreshSongCards(this.currentList);
+           this.saveLists();
+        }
+    }
 }

@@ -178,45 +178,52 @@ export default class PlaylisterView {
             let itemDiv = document.createElement("div");
             itemDiv.classList.add("song-card");
             itemDiv.classList.add("unselected-song-card");
-            itemDiv.id = "song-card-" + (i + 1);
+            itemDiv.id = "song-card-" + i;
 
-            // HAVE THE TEXT LINK TO THE YOUTUBE VIDEO
+            let songNumber = document.createTextNode("" + (i + 1) + ". ");
+            itemDiv.appendChild(songNumber);
+
             let youTubeLink = document.createElement("a");
             youTubeLink.classList.add("song-card-title");
             youTubeLink.href = "https://www.youtube.com/watch?v=" + song.youTubeId;
-            youTubeLink.target = 1;
+            youTubeLink.target = "_blank";
             youTubeLink.innerHTML = song.title;
-
-            let bySpan = document.createElement("span");
-            bySpan.class = "song-card-by";
-            bySpan.innerHTML = " by ";
-
-            let artistSpan = document.createElement("span");
-            artistSpan.class = "song-card-artist";
-            artistSpan.innerHTML = song.artist;
-
-            // PUT THE CONTENT INTO THE CARD
-            let songNumber = document.createTextNode("" + (i + 1) + ". ");
-            itemDiv.appendChild(songNumber);
             itemDiv.appendChild(youTubeLink);
+
+            // BY SPAN
+            let bySpan = document.createElement("span");
+            bySpan.className = "song-card-by";
+            bySpan.innerHTML = " by ";
             itemDiv.appendChild(bySpan);
+
+            // ARTIST SPAN
+            let artistSpan = document.createElement("span");
+            artistSpan.className = "song-card-artist";
+            artistSpan.innerHTML = song.artist;
             itemDiv.appendChild(artistSpan);
 
-            // MAKE THE DELETE LIST BUTTON
+            // YEAR SPAN
+            let yearSpan = document.createElement("span");
+            yearSpan.className = "song-card-year";
+            yearSpan.innerHTML = " (" + song.year + ")";
+            itemDiv.appendChild(yearSpan);
+
+            // DELETE BUTTON
             let deleteButton = document.createElement("input");
-            deleteButton.setAttribute("type", "button");
-            deleteButton.setAttribute("id", "remove-song-" + i);
-            deleteButton.setAttribute("class", "song-card-button");
-            deleteButton.setAttribute("value", "\u2715");
+            deleteButton.type = "button";
+            deleteButton.id = "remove-song-" + i;
+            deleteButton.className = "song-card-button";
+            deleteButton.value = "\u2715";
             itemDiv.appendChild(deleteButton);
 
-            // AND PUT THE CARD INTO THE UI
+            // ADD CARD TO UI
             itemsDiv.appendChild(itemDiv);
         }
-        // NOW THAT THE CONTROLS EXIST WE CAN REGISTER EVENT
-        // HANDLERS FOR THEM
+
+        // REGISTER EVENT HANDLERS VIA CONTROLLER
         this.controller.registerSongCardHandlers();
-    }
+}
+
 
     /**
      * When UI controls are dynamically created by this object they may need
