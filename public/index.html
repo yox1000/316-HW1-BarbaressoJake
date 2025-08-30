@@ -75,6 +75,16 @@
                 value="⧉" /> 
         </div>
 
+        <!-- PROTOTYPE FOR MAKING SONG CARDS -->
+        <div hidden id="song-card-prototype" class="song-card unselected-song-card">
+            <span class="song-card-number"></span>
+            <a href="#" target="_blank" class="song-card-title"></a>
+            <span class="song-card-by"> by </span>
+            <span class="song-card-artist"></span>
+            <span class="song-card-year"></span> <!-- NEW YEAR SPAN -->
+            <input type="button" class="remove-song-button" value="✕" />
+        </div>
+
 
         <!-- MODAL (i.e. DIALOG) FOR EDITING SONG DATA -->
         <div id="edit-song-modal" class="modal" data-animation="slideInOutLeft">
@@ -83,6 +93,7 @@
                 <div id="edit-song-modal-content" class="modal-center">
                     <div id="title-prompt" class="modal-prompt">Title:</div><input id="edit-song-modal-title-textfield" class='modal-textfield' type="text" value="?" />
                     <div id="artist-prompt" class="modal-prompt">Artist:</div><input id="edit-song-modal-artist-textfield" class='modal-textfield' type="text" value="?" />
+                    <div id = "year-prompt" class="modal-prompt">Year:</div><input id="edit-song-modal-year-textfield" class='modal-textfield' type="text" value="?" />
                     <div id="you-tube-id-prompt" class="modal-prompt">You Tube Id:</div><input id="edit-song-modal-youTubeId-textfield" class='modal-textfield' type="text" value="?" />
                 </div>
                 <div class="modal-south">

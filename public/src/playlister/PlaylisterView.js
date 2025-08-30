@@ -167,56 +167,49 @@ export default class PlaylisterView {
      * @param {Playlist} playlist The playlist whose songs are to be reshown.
      */
     refreshSongCards(playlist) {
-        // CLEAR OUT THE OLD SONG CARDS
-        let itemsDiv = document.getElementById("song-cards");
-        itemsDiv.innerHTML = "";
+    // CLEAR OUT THE OLD SONG CARDS
+    let itemsDiv = document.getElementById("song-cards");
+    itemsDiv.innerHTML = "";
 
-        // FOR EACH SONG
-        for (let i = 0; i < playlist.songs.length; i++) {
-            // MAKE AN ITEM (i.e. CARD)
-            let song = playlist.getSongAt(i);
-            let itemDiv = document.createElement("div");
-            itemDiv.classList.add("song-card");
-            itemDiv.classList.add("unselected-song-card");
-            itemDiv.id = "song-card-" + (i + 1);
+    // FOR EACH SONG
+    for (let i = 0; i < playlist.songs.length; i++) {
+        let song = playlist.getSongAt(i);
 
-            // HAVE THE TEXT LINK TO THE YOUTUBE VIDEO
-            let youTubeLink = document.createElement("a");
-            youTubeLink.classList.add("song-card-title");
-            youTubeLink.href = "https://www.youtube.com/watch?v=" + song.youTubeId;
-            youTubeLink.target = 1;
-            youTubeLink.innerHTML = song.title;
+        // CLONE THE SONG CARD PROTOTYPE
+        let songCard = document.getElementById("song-card-prototype").cloneNode(true);
+        songCard.id = "song-card-" + i;
+        songCard.hidden = false;  // unhide the card
 
-            let bySpan = document.createElement("span");
-            bySpan.class = "song-card-by";
-            bySpan.innerHTML = " by ";
+        // UPDATE NUMBER
+        let numberSpan = songCard.querySelector(".song-card-number");
+        numberSpan.textContent = (i + 1) + ". ";
 
-            let artistSpan = document.createElement("span");
-            artistSpan.class = "song-card-artist";
-            artistSpan.innerHTML = song.artist;
+        // UPDATE TITLE & LINK
+        let titleLink = songCard.querySelector(".song-card-title");
+        titleLink.textContent = song.title;
+        titleLink.href = "https://www.youtube.com/watch?v=" + song.youTubeId;
+        titleLink.target = "_blank";
 
-            // PUT THE CONTENT INTO THE CARD
-            let songNumber = document.createTextNode("" + (i + 1) + ". ");
-            itemDiv.appendChild(songNumber);
-            itemDiv.appendChild(youTubeLink);
-            itemDiv.appendChild(bySpan);
-            itemDiv.appendChild(artistSpan);
+        // UPDATE ARTIST
+        let artistSpan = songCard.querySelector(".song-card-artist");
+        artistSpan.textContent = song.artist;
 
-            // MAKE THE DELETE LIST BUTTON
-            let deleteButton = document.createElement("input");
-            deleteButton.setAttribute("type", "button");
-            deleteButton.setAttribute("id", "remove-song-" + i);
-            deleteButton.setAttribute("class", "song-card-button");
-            deleteButton.setAttribute("value", "\u2715");
-            itemDiv.appendChild(deleteButton);
+        // UPDATE YEAR
+        let yearSpan = songCard.querySelector(".song-card-year");
+        yearSpan.textContent = " (" + song.year + ")";
 
-            // AND PUT THE CARD INTO THE UI
-            itemsDiv.appendChild(itemDiv);
-        }
-        // NOW THAT THE CONTROLS EXIST WE CAN REGISTER EVENT
-        // HANDLERS FOR THEM
-        this.controller.registerSongCardHandlers();
+        // UPDATE DELETE BUTTON ID
+        let deleteButton = songCard.querySelector(".remove-song-button");
+        deleteButton.id = "remove-song-" + i;
+
+        // APPEND TO UI
+        itemsDiv.appendChild(songCard);
     }
+
+    // REGISTER EVENT HANDLERS VIA CONTROLLER
+    this.controller.registerSongCardHandlers();
+}
+
 
     /**
      * When UI controls are dynamically created by this object they may need
