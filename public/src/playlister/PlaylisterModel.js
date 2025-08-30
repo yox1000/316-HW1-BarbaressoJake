@@ -4,6 +4,7 @@ import PlaylistSongPrototype from './PlaylistSongPrototype.js';
 import CreateSong_Transaction from "./transactions/CreateSong_Transaction.js";
 import MoveSong_Transaction from "./transactions/MoveSong_Transaction.js";
 import RemoveSong_Transaction from "./transactions/RemoveSong_Transaction.js";
+import EditSong_Transaction from "./transactions/EditSong_Transaction.js";
 import PlaylistBuilder from './PlaylistBuilder.js';
 
 /**
@@ -523,7 +524,7 @@ export default class PlaylisterModel {
 
         // Deep copy songs from original playlist
         let copiedSongs = original.songs.map(song => {
-            return new PlaylistSongPrototype(song.title, song.artist, song.youTubeId);
+            return new PlaylistSongPrototype(song.title, song.artist, song.youTubeId, song.year);
         });
 
         // Generates new name for the copy of the duplicated playlist

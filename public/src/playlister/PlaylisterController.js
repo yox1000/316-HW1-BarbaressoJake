@@ -3,6 +3,9 @@
  * 
  * @author McKilla Gorilla
  */
+
+import EditSong_Transaction from './transactions/EditSong_Transaction.js';
+
 export default class PlaylisterController {
     constructor() { }
 
@@ -229,6 +232,7 @@ export default class PlaylisterController {
                 document.getElementById("edit-song-modal-title-textfield").value = song.title;
                 document.getElementById("edit-song-modal-artist-textfield").value = song.artist;
                 document.getElementById("edit-song-modal-youTubeId-textfield").value = song.youTubeId;
+                document.getElementById("edit-song-modal-year-textfield").value = song.year;
 
                 // OPEN UP THE MODAL
                 let editSongModal = document.getElementById("edit-song-modal");
@@ -318,7 +322,25 @@ export default class PlaylisterController {
         let newYear = document.getElementById("edit-song-modal-year-textfield").value; 
 
         // Tell model to update song
-        this.model.handleUpdateSong(songIndex, newTitle, newArtist, newYouTubeId, newYear);
+        let oldSong = this.model.getSong(songIndex);
+        let oldSongData = {
+            title: oldSong.title,
+            artist: oldSong.artist,
+            youTubeId: oldSong.youTubeId,
+            year: oldSong.year
+        };
+
+        let newSongData = {
+            title: newTitle,
+            artist: newArtist,
+            youTubeId: newYouTubeId,
+            year: newYear
+        };
+
+        // Create, add transaction
+        let transaction = new EditSong_Transaction(this.model, songIndex, oldSongData, newSongData);
+        this.model.tps.processTransaction(transaction);
+
 
         // Close modal
         let editSongModal = document.getElementById("edit-song-modal");
