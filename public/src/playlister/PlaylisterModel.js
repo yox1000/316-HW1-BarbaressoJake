@@ -311,7 +311,8 @@ export default class PlaylisterModel {
                     let title = songData.title;
                     let artist = songData.artist;
                     let youTubeId = songData.youTubeId;
-                    songs[j] = new PlaylistSongPrototype(title, artist, youTubeId);
+                    let year = songData.year;
+                    songs[j] = new PlaylistSongPrototype(title, artist, youTubeId, year);
                 }
                 this.addNewList(listData.name, songs);
             }
@@ -538,7 +539,7 @@ export default class PlaylisterModel {
     /**
      * Updates the song at the edit index to have the new values provided from the edit song modal.
      */
-    updateSong(index, newTitle, newArtist, newYouTubeId, newYear) {
+    handleUpdateSong(index, newTitle, newArtist, newYouTubeId, newYear) {
         if (this.hasCurrentList() && index >= 0 && index < this.currentList.songs.length) {
            let song = this.currentList.songs[index];
            song.title = newTitle;

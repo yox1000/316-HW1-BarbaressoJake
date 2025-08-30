@@ -109,6 +109,15 @@ export default class PlaylisterController {
             deleteListModal.classList.remove("is-visible");
         }
 
+        // Trigger confirm on Enter key for edit song modal
+        const editSongModal = document.getElementById("edit-song-modal");
+        editSongModal.addEventListener("keydown", (event) => {  
+            if (event.key === "Enter") {
+                event.preventDefault(); //Enter only runs custom handler
+                document.getElementById("edit-song-confirm-button").click();
+            }
+        });
+
     }
 
     /**
@@ -204,7 +213,7 @@ export default class PlaylisterController {
         // AT ONCE EVERY TIME DATA CHANGES, SINCE IT GETS REBUILT EACH TIME
         for (let i = 0; i < this.model.getPlaylistSize(); i++) {
             // GET THE CARD
-            let card = document.getElementById("song-card-" + (i + 1));
+            let card = document.getElementById("song-card-" + (i));
 
             // USER WANTS TO EDIT THE SONG
             card.ondblclick = (event) => {
@@ -212,7 +221,7 @@ export default class PlaylisterController {
                 this.ignoreParentClick(event);
 
                 // WE NEED TO RECORD THE INDEX FOR THE MODAL
-                let songIndex = Number.parseInt(event.target.id.split("-")[2]) - 1;
+                let songIndex = Number.parseInt(event.target.id.split("-")[2]);
                 this.model.setEditSongIndex(songIndex);
                 let song = this.model.getSong(songIndex);
 
@@ -301,15 +310,15 @@ export default class PlaylisterController {
     }
     }
 
-    handleupdatesong () {
+    handleUpdateSong () {
         let songIndex = this.model.getEditSongIndex();
         let newTitle = document.getElementById("edit-song-modal-title-textfield").value;
         let newArtist = document.getElementById("edit-song-modal-artist-textfield").value;
         let newYouTubeId = document.getElementById("edit-song-modal-youTubeId-textfield").value;
-        let newYear = document.getElementById("edit-song-modal-year-textfield").value; // NEW FIELD
+        let newYear = document.getElementById("edit-song-modal-year-textfield").value; 
 
         // Tell model to update song
-        this.model.updateSong(songIndex, newTitle, newArtist, newYouTubeId, newYear);
+        this.model.handleUpdateSong(songIndex, newTitle, newArtist, newYouTubeId, newYear);
 
         // Close modal
         let editSongModal = document.getElementById("edit-song-modal");
