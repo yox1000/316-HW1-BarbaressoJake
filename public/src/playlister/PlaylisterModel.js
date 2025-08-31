@@ -553,4 +553,13 @@ export default class PlaylisterModel {
            this.saveLists();
         }
     }
+
+    setRemoveSongIndex(index) {
+    this.removeSongIndex = index;
+}
+
+    getRemoveSongIndex() {
+        return this.removeSongIndex;
+    }
+
 }

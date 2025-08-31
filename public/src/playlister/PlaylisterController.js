@@ -83,6 +83,31 @@ export default class PlaylisterController {
             this.handleUpdateSong();
         }
 
+        // RESPOND TO THE USER CONFIRMING TO REMOVE A SONG
+        document.getElementById("remove-song-confirm-button").onclick = (event) => {
+            // GET THE SONG INDEX STORED IN THE MODEL WHEN OPENING THE MODAL
+            let songIndex = this.model.getRemoveSongIndex();
+
+            // ADD TRANSACTION TO REMOVE SONG
+            this.model.addTransactionToRemoveSong(songIndex);
+
+            // ALLOW OTHER INTERACTIONS
+            this.model.toggleConfirmDialogOpen();
+
+            // CLOSE THE MODAL
+            let removeSongModal = document.getElementById("remove-song-modal");
+            removeSongModal.classList.remove("is-visible");
+        }
+
+        // RESPOND TO THE USER CANCELING THE REMOVE SONG MODAL
+        document.getElementById("remove-song-cancel-button").onclick = (event) => {
+            // ALLOW OTHER INTERACTIONS
+            this.model.toggleConfirmDialogOpen();
+
+            // CLOSE THE MODAL
+            let removeSongModal = document.getElementById("remove-song-modal");
+            removeSongModal.classList.remove("is-visible");
+        }
 
         // RESPOND TO THE USER CONFIRMING TO DELETE A PLAYLIST
         document.getElementById("delete-list-confirm-button").onclick = (event) => {
@@ -243,17 +268,22 @@ export default class PlaylisterController {
             }
 
             // USER WANTS TO REMOVE A SONG FROM THE PLAYLIST
-            let removeSongButton = document.getElementById("remove-song-" + i);
+            let removeSongButton = card.querySelector(".remove-song-button");
             removeSongButton.onclick = (event) => {
-                // DON'T PROPOGATE THE EVENT
                 this.ignoreParentClick(event);
 
-                // RECORD WHICH SONG SO THE MODAL KNOWS AND UPDATE THE MODAL TEXT
-                let songIndex = Number.parseInt(event.target.id.split("-")[2]);               
+                let button = event.target;
+                let songIndex = Number.parseInt(button.id.split("-")[2]);
+                this.model.setRemoveSongIndex(songIndex);
 
-                // PROCESS THE REMOVE SONG EVENT
-                this.model.addTransactionToRemoveSong(songIndex);
+                let song = this.model.getSong(songIndex);
+                document.getElementById("remove-song-title-span").innerHTML = song.title;
+
+                let removeSongModal = document.getElementById("remove-song-modal");
+                removeSongModal.classList.add("is-visible");
+                this.model.toggleConfirmDialogOpen();
             }
+
 
             // NOW SETUP ALL CARD DRAGGING HANDLERS AS THE USER MAY WISH TO CHANGE
             // THE ORDER OF SONGS IN THE PLAYLIST
