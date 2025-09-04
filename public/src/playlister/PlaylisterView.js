@@ -48,7 +48,7 @@ export default class PlaylisterView {
         deleteButton.id = "delete-list-button-" + newList.id;
 
         // UPDATE DUPLICATE BUTTON ID
-        let duplicateButton = playlistCard.querySelector('input[value="⧉"]');
+        let duplicateButton = playlistCard.querySelector('input[value="⎘"]');
         duplicateButton.id = "duplicate-playlist-button-" + newList.id;
 
         // UNHIDE THE CARD
