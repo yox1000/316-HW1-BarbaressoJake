@@ -89,6 +89,7 @@ export class jsTPS {
     doTransaction() {
         if (this.hasTransactionToDo()) {
             let transaction = this.transactions[this.topIndex];
+            //calls the doTransaction() method that lives inside specific transaction class (AddSongTransaction, RemoveSongTransaction, etc)
             transaction.doTransaction();
             this.topIndex++;
         }

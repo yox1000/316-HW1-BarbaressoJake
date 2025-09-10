@@ -155,8 +155,13 @@ body {
 
 .playlist-card-button,
 .song-card-button {
-  float:right;
-  font-size:24pt;
+  float: right;
+  font-size: 24pt;
+  width: 30px;
+  height: 50px;
+  line-height: 50px;  
+  text-align: center;   
+  padding-left: 2px;    
 }
 
 .playlist-card,
@@ -174,7 +179,7 @@ body {
 }
 
 .playlist-card-text-input {
-  font-size: 18pt;
+  font-size: 14pt;
   width: 100%;
 }
 
@@ -206,4 +211,9 @@ body {
   border-style: solid;
   box-shadow: 2px 4px #888888;
   border-radius: 5px;
+}
+
+.remove-song-button{
+  float:right;
+  font-size:24pt;
 }

@@ -4,6 +4,7 @@ import PlaylistSongPrototype from './PlaylistSongPrototype.js';
 import CreateSong_Transaction from "./transactions/CreateSong_Transaction.js";
 import MoveSong_Transaction from "./transactions/MoveSong_Transaction.js";
 import RemoveSong_Transaction from "./transactions/RemoveSong_Transaction.js";
+import EditSong_Transaction from "./transactions/EditSong_Transaction.js";
 import PlaylistBuilder from './PlaylistBuilder.js';
 
 /**
@@ -76,7 +77,7 @@ export default class PlaylisterModel {
      */
     addTransactionToCreateSong() {
         // ADD A SONG
-        let song = new PlaylistSongPrototype("Untitled", "???", 2000, "dQw4w9WgXcQ");
+        let song = new PlaylistSongPrototype("Untitled", "???", null, "???");
         let appendIndex = this.getPlaylistSize();
         let transaction = new CreateSong_Transaction(this, appendIndex, song);
         this.tps.processTransaction(transaction);
@@ -271,6 +272,7 @@ export default class PlaylisterModel {
         let list = null;
         let found = false;
         let i = 0;
+        //looking for the playlist with the correct id
         while ((i < this.playlists.length) && !found) {
             list = this.playlists[i];
             if (list.id === id) {
@@ -279,6 +281,7 @@ export default class PlaylisterModel {
             }
             i++;
         }
+        //clear the transaction stack as we go to new list
         this.tps.clearAllTransactions();
         let listName = "";
         if (this.hasCurrentList())
@@ -301,12 +304,14 @@ export default class PlaylisterModel {
             return false;
         }
         else {
+            //inserting playlists into the model from local storage, one by one
             let listsJSON = JSON.parse(recentLists);
             this.playlists = [];
             for (let i = 0; i < listsJSON.length; i++) {
                 let listData = listsJSON[i];
                 let songs = [];
                 for (let j = 0; j < listData.songs.length; j++) {
+                    //inserting songs into its respective playlist, one by one
                     let songData = listData.songs[j];
                     let title = songData.title;
                     let artist = songData.artist;
@@ -316,6 +321,7 @@ export default class PlaylisterModel {
                 }
                 this.addNewList(listData.name, songs);
             }
+            //sort after inserting all the playlists 
             this.sortLists();   
             this.view.refreshPlaylistCards(this.playlists);
             return true;
@@ -523,7 +529,7 @@ export default class PlaylisterModel {
 
         // Deep copy songs from original playlist
         let copiedSongs = original.songs.map(song => {
-            return new PlaylistSongPrototype(song.title, song.artist, song.youTubeId);
+            return new PlaylistSongPrototype(song.title, song.artist, song.youTubeId, song.year);
         });
 
         // Generates new name for the copy of the duplicated playlist
@@ -552,4 +558,13 @@ export default class PlaylisterModel {
            this.saveLists();
         }
     }
+
+    setRemoveSongIndex(index) {
+    this.removeSongIndex = index;
+}
+
+    getRemoveSongIndex() {
+        return this.removeSongIndex;
+    }
+
 }

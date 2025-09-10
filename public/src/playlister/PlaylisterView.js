@@ -48,7 +48,7 @@ export default class PlaylisterView {
         deleteButton.id = "delete-list-button-" + newList.id;
 
         // UPDATE DUPLICATE BUTTON ID
-        let duplicateButton = playlistCard.querySelector('input[value="⧉"]');
+        let duplicateButton = playlistCard.querySelector('input[value="⎘"]');
         duplicateButton.id = "duplicate-playlist-button-" + newList.id;
 
         // UNHIDE THE CARD
@@ -265,13 +265,39 @@ export default class PlaylisterView {
      * buttons cannot be used they are disabled.
      */
     updateToolbarButtons(hasCurrentList, isConfirmDialogOpen, hasTransactionToDo, hasTransactionToUndo) {
-        this.enableButton("close-button");
-        this.enableButton("add-song-button");
+        if (hasCurrentList) {
+            this.enableButton("close-button");
+            this.enableButton("add-song-button");
+        } else {
+            this.disableButton("close-button");
+            this.disableButton("add-song-button");
+        }
+
+
         if (!hasTransactionToUndo) {
             this.disableButton("undo-button");
         }
         else {
             this.enableButton("undo-button");
         }
+        if (!hasTransactionToDo) {
+            this.disableButton("redo-button");
+        }
+        else {
+            this.enableButton("redo-button");
+        }
     }
+
+    showRemoveSongModal(song) {
+        document.getElementById("remove-song-title-span").textContent = song.title;
+        let modal = document.getElementById("remove-song-modal");
+        modal.classList.add("is-visible");
+    }
+
+    // Hide remove song verification modal
+    hideRemoveSongModal() {
+        let modal = document.getElementById("remove-song-modal");
+        modal.classList.remove("is-visible");
+    }
+
 }
