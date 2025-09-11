@@ -23,6 +23,7 @@
 }
 
 .modal-root {
+  font-family: 'Tangerine';
   position: relative;
   max-width: 1200vw;
   max-height: 600vh;
