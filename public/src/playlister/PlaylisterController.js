@@ -59,13 +59,12 @@ export default class PlaylisterController {
         }
         // HANDLER FOR CLOSE LIST BUTTON
         document.getElementById("close-button").onmousedown = (event) => {
-           // this.model.unselectAll();
             this.model.unselectCurrentList();
         }
     }
 
     /**
-     * Specifies  event handlers for when confirm and cancel buttons
+     * Specifies event handlers for when confirm and cancel buttons
      * are pressed in the three modals.
      */
     registerModalHandlers() {
@@ -77,6 +76,11 @@ export default class PlaylisterController {
             // CLOSE THE MODAL
             let editSongModal = document.getElementById("edit-song-modal");
             editSongModal.classList.remove("is-visible");
+
+            //tabindex removed when modal closes
+            if (editSongModal.hasAttribute && editSongModal.hasAttribute("tabindex")) {
+                editSongModal.removeAttribute("tabindex");
+            }
         }
 
         document.getElementById("edit-song-confirm-button").onclick = (event) => {
@@ -97,6 +101,11 @@ export default class PlaylisterController {
             // CLOSE THE MODAL
             let removeSongModal = document.getElementById("remove-song-modal");
             removeSongModal.classList.remove("is-visible");
+
+            //tabindex removed when modal closes
+            if (removeSongModal.hasAttribute && removeSongModal.hasAttribute("tabindex")) {
+                removeSongModal.removeAttribute("tabindex");
+            }
         }
 
         // RESPOND TO THE USER CANCELING THE REMOVE SONG MODAL
@@ -107,6 +116,11 @@ export default class PlaylisterController {
             // CLOSE THE MODAL
             let removeSongModal = document.getElementById("remove-song-modal");
             removeSongModal.classList.remove("is-visible");
+
+            //tabindex removed when modal closes
+            if (removeSongModal.hasAttribute && removeSongModal.hasAttribute("tabindex")) {
+                removeSongModal.removeAttribute("tabindex");
+            }
         }
 
         // RESPOND TO THE USER CONFIRMING TO DELETE A PLAYLIST
@@ -125,6 +139,11 @@ export default class PlaylisterController {
             // CLOSE THE MODAL
             let deleteListModal = document.getElementById("delete-list-modal");
             deleteListModal.classList.remove("is-visible");
+
+            // tabindex removed when modal closes
+            if (deleteListModal.hasAttribute && deleteListModal.hasAttribute("tabindex")) {
+                deleteListModal.removeAttribute("tabindex");
+            }
         }
 
         // RESPOND TO THE USER CLOSING THE DELETE PLAYLIST MODAL
@@ -135,6 +154,11 @@ export default class PlaylisterController {
             // CLOSE THE MODAL
             let deleteListModal = document.getElementById("delete-list-modal");
             deleteListModal.classList.remove("is-visible");
+
+            //tabindex removed when modal closes
+            if (deleteListModal.hasAttribute && deleteListModal.hasAttribute("tabindex")) {
+                deleteListModal.removeAttribute("tabindex");
+            }
         }
 
         // Trigger confirm on Enter key for edit song modal
@@ -143,9 +167,53 @@ export default class PlaylisterController {
             if (event.key === "Enter") {
                 event.preventDefault(); //Enter only runs custom handler
                 document.getElementById("edit-song-confirm-button").click();
+            } else if (event.key === "Escape") {
+                event.preventDefault();
+                document.getElementById("edit-song-cancel-button").click();
             }
         });
 
+        // This listens on document and triggers confirm/cancel on enter/escape
+        // when any modal is visible. Ensures even if focus is lost from modal
+        document.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter" && event.key !== "Escape") return;
+
+            // Check delete playlist modal first
+            const deleteModal = document.getElementById("delete-list-modal");
+            if (deleteModal && deleteModal.classList.contains("is-visible")) {
+                event.preventDefault();
+                if (event.key === "Enter") {
+                    document.getElementById("delete-list-confirm-button").click();
+                } else {
+                    document.getElementById("delete-list-cancel-button").click();
+                }
+                return;
+            }
+
+            // Check remove song modal
+            const removeModal = document.getElementById("remove-song-modal");
+            if (removeModal && removeModal.classList.contains("is-visible")) {
+                event.preventDefault();
+                if (event.key === "Enter") {
+                    document.getElementById("remove-song-confirm-button").click();
+                } else {
+                    document.getElementById("remove-song-cancel-button").click();
+                }
+                return;
+            }
+
+            // Check edit song modal (kept for completeness)
+            const editModal = document.getElementById("edit-song-modal");
+            if (editModal && editModal.classList.contains("is-visible")) {
+                event.preventDefault();
+                if (event.key === "Enter") {
+                    document.getElementById("edit-song-confirm-button").click();
+                } else {
+                    document.getElementById("edit-song-cancel-button").click();
+                }
+                return;
+            }
+        });
     }
 
     /**
@@ -189,6 +257,16 @@ export default class PlaylisterController {
             // OPEN UP THE DIALOG
             deleteListModal.classList.add("is-visible");
             this.model.toggleConfirmDialogOpen();
+
+            // BLUR clicked button and force-focus the modal 
+            // This prevents the button from keeping focus and stealing Enter.
+            try {
+                if (event && event.target && typeof event.target.blur === "function") event.target.blur();
+            } catch(e) {}
+            deleteListModal.setAttribute("tabindex", "-1");
+            setTimeout(() => {
+                try { deleteListModal.focus(); } catch(e){}
+            }, 0);
         }
         // FOR RENAMING THE LIST NAME
         document.getElementById("playlist-card-" + id).ondblclick = (event) => {
@@ -282,6 +360,15 @@ export default class PlaylisterController {
                 let removeSongModal = document.getElementById("remove-song-modal");
                 removeSongModal.classList.add("is-visible");
                 this.model.toggleConfirmDialogOpen();
+
+                //ignore if doesnt have blur method 
+                try {
+                    if (button && typeof button.blur === "function") button.blur();
+                } catch(e) {}
+                removeSongModal.setAttribute("tabindex", "-1");
+                setTimeout(() => {
+                    try { removeSongModal.focus(); } catch(e) {}
+                }, 0);
             }
 
 
@@ -379,6 +466,9 @@ export default class PlaylisterController {
         // Re-enable interactions
         this.model.toggleConfirmDialogOpen();
 
+        if (editSongModal.hasAttribute && editSongModal.hasAttribute("tabindex")) {
+            editSongModal.removeAttribute("tabindex");
+        }
     }
 
 }

@@ -22,7 +22,6 @@ export default class MoveSong_Transaction extends jsTPS_Transaction {
         this.oldIndex = initOldIndex;
         this.newIndex = initNewIndex;
     }
-
     /**
      * Executed when this transaction is first done or redone.
      */
