@@ -60,6 +60,12 @@ export default class PlaylisterController {
         // HANDLER FOR CLOSE LIST BUTTON
         document.getElementById("close-button").onmousedown = (event) => {
             this.model.unselectCurrentList();
+
+            //re-enable add playlist button once outside of editing a playlist
+            let addPlaylistButton = document.getElementById("add-playlist-button");
+            addPlaylistButton.disabled = false;
+            addPlaylistButton.classList.remove("disabled");
+
         }
     }
 
@@ -234,6 +240,12 @@ export default class PlaylisterController {
 
                 // GET THE SELECTED LIST
                 this.model.loadList(id);
+
+                //disable add playlist button while editing a playlist
+                let addPlaylistButton = document.getElementById("add-playlist-button");
+                addPlaylistButton.disabled = true;
+                addPlaylistButton.classList.add("disabled");
+
             }
         }
         // HANDLES DELETING A PLAYLIST
@@ -327,7 +339,7 @@ export default class PlaylisterController {
                 this.ignoreParentClick(event);
 
                 // WE NEED TO RECORD THE INDEX FOR THE MODAL
-                let songIndex = Number.parseInt(event.target.id.split("-")[2]);
+                let songIndex = Number.parseInt(event.currentTarget.id.split("-")[2]);
                 this.model.setEditSongIndex(songIndex);
                 let song = this.model.getSong(songIndex);
 

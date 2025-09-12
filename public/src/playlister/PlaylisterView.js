@@ -167,47 +167,50 @@ export default class PlaylisterView {
      * @param {Playlist} playlist The playlist whose songs are to be reshown.
      */
     refreshSongCards(playlist) {
-    // CLEAR OUT THE OLD SONG CARDS
-    let itemsDiv = document.getElementById("song-cards");
-    itemsDiv.innerHTML = "";
+        // CLEAR OUT THE OLD SONG CARDS
+        let itemsDiv = document.getElementById("song-cards");
+        //wipe out old song cards
+        itemsDiv.innerHTML = "";
 
-    // FOR EACH SONG
-    for (let i = 0; i < playlist.songs.length; i++) {
-        let song = playlist.getSongAt(i);
+        // FOR EACH SONG
+        for (let i = 0; i < playlist.songs.length; i++) {
+            let song = playlist.getSongAt(i);
 
-        // CLONE THE SONG CARD PROTOTYPE
-        let songCard = document.getElementById("song-card-prototype").cloneNode(true);
-        songCard.id = "song-card-" + i;
-        songCard.hidden = false;  // unhide the card
+            // CLONE THE SONG CARD PROTOTYPE
+            let songCard = document.getElementById("song-card-prototype").cloneNode(true);
+            //clones from the hidden propotype and makes a copy, gives unique id based on index and then unhides it
+            songCard.id = "song-card-" + i;
+            songCard.hidden = false;  
 
-        // UPDATE NUMBER
-        let numberSpan = songCard.querySelector(".song-card-number");
-        numberSpan.textContent = (i + 1) + ". ";
+            // UPDATE NUMBER
+            let numberSpan = songCard.querySelector(".song-card-number");
+            //+1 to index to make song list 1-based (1, 2, 3, 4...) 
+            numberSpan.textContent = (i + 1) + ". ";
 
-        // UPDATE TITLE & LINK
-        let titleLink = songCard.querySelector(".song-card-title");
-        titleLink.textContent = song.title;
-        titleLink.href = "https://www.youtube.com/watch?v=" + song.youTubeId;
-        titleLink.target = "_blank";
+            // UPDATE TITLE & LINK
+            let titleLink = songCard.querySelector(".song-card-title");
+            titleLink.textContent = song.title;
+            titleLink.href = "https://www.youtube.com/watch?v=" + song.youTubeId;
+            titleLink.target = "_blank";
 
-        // UPDATE ARTIST
-        let artistSpan = songCard.querySelector(".song-card-artist");
-        artistSpan.textContent = song.artist;
+            // UPDATE ARTIST
+            let artistSpan = songCard.querySelector(".song-card-artist");
+            artistSpan.textContent = song.artist;
 
-        // UPDATE YEAR
-        let yearSpan = songCard.querySelector(".song-card-year");
-        yearSpan.textContent = " (" + song.year + ")";
+            // UPDATE YEAR
+            let yearSpan = songCard.querySelector(".song-card-year");
+            yearSpan.textContent = " (" + song.year + ")";
 
-        // UPDATE DELETE BUTTON ID
-        let deleteButton = songCard.querySelector(".remove-song-button");
-        deleteButton.id = "remove-song-" + i;
+            // UPDATE DELETE BUTTON ID
+            let deleteButton = songCard.querySelector(".remove-song-button");
+            deleteButton.id = "remove-song-" + i;
 
-        // APPEND TO UI
-        itemsDiv.appendChild(songCard);
-    }
+            // APPEND TO UI
+            itemsDiv.appendChild(songCard);
+        }
 
-    // REGISTER EVENT HANDLERS VIA CONTROLLER
-    this.controller.registerSongCardHandlers();
+        // REGISTER EVENT HANDLERS VIA CONTROLLER
+        this.controller.registerSongCardHandlers();
 }
 
 
