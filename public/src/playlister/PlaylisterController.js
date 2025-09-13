@@ -411,7 +411,7 @@ export default class PlaylisterController {
                 event.preventDefault();
                 // GET THE INDICES OF WHERE THE CARD IS BRING DRAGGED FROM AND TO
                 let fromIndex = Number.parseInt(event.dataTransfer.getData("from-id"));
-                let toIndex = Number.parseInt(event.target.id.split("-")[2]) - 1;
+                let toIndex = Number.parseInt(event.currentTarget.id.split("-")[2]);
 
                 // ONLY ADD A TRANSACTION IF THEY ARE NOT THE SAME
                 // AND BOTH INDICES ARE VALID
@@ -482,5 +482,4 @@ export default class PlaylisterController {
             editSongModal.removeAttribute("tabindex");
         }
     }
-
 }

@@ -384,6 +384,10 @@ export default class PlaylisterModel {
 
             this.sortLists(); 
             this.saveLists();
+            let cardText = document.getElementById("playlist-card-text-" + this.currentList.id);
+            if (cardText) {
+                cardText.textContent = this.currentList.name;
+            }
             this.view.highlightList(this.currentList.id);
             this.view.hidePlaylistTextInput(this.currentList.id);        
             this.view.updateStatusBar(this, this.currentList.name);
